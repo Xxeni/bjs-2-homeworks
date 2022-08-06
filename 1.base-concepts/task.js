@@ -1,7 +1,7 @@
 "use strict";
 
 function solveEquation(a, b, c) {
-  let arr = [prompt("Введите a: "),  prompt("Введите b: "),  prompt("Введите c: ");];
+  let arr = [];
   if (a === 0)
     return "Ошибка, а не равно 0";
   let D = b ** 2 - 4 * a * c;
