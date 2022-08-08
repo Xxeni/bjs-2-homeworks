@@ -55,3 +55,4 @@ function worker2(arr) {
   difference = Math.abs(max - min);
   return difference;
 }
+
