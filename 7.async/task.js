@@ -1,114 +1,66 @@
 class AlarmClock {
-	constructor(alarmCollection, timerId) {
-		this.alarmCollection = [];
-		this.timerId = null;
-	}
+    constructor(alarmCollection, timerId){
+        this.alarmCollection = [];
+        this.timerId = null;
+    }
 
-addClock(time, callback, id) {
+    addClock (time, callback, id) {
+        if (id === undefined) {
+            throw new Error('error text'); 
+        }
+        for (let i=0; i<this.alarmCollection.length; i++){
+            if (this.alarmCollection[i].id === id) {
+                console.error("Будильник с таким id уже существует");
+                return;
+            }
+        }           
+        this.alarmCollection.push({id, time, callback});
+    }
 
-	if (!id) {
-		throw new Error('Параметр не передан!');
-	}
+    removeClock(id) {
+        
+        for (let i = 0; i < this.alarmCollection.length; i++) {
+            if (this.alarmCollection[i].id === id) {               
+            return this.alarmCollection.splice([i], 1); 
+            } 
+    }        
+    }
 
-	else if (this.alarmCollection.find(item => item.id === id)) {
-		return console.error('Будильник уже существует.');
-	}
-	else {
-		this.alarmCollection.push({time:time, id:id, callback:callback});
-	}	
-}
-
-removeClock(id) {
-	const deleteId = this.alarmCollection.filter((element) => element.id === id);
-	if (deleteId) {
-		this.alarmCollection.pop();
-	}	 
-		return  
-		this.alarmCollection.length != this.alarmCollection.length;
-	}
-	
-getCurrentFormattedTime() {
-	let now = new Date();
+    getCurrentFormattedTime() {
+        let now = new Date();
         const hours = now.getHours() < 10 ? `0${now.getHours()}` : `${now.getHours()}`;
         const minutes = now.getMinutes() < 10 ? `0${now.getMinutes()}` : `${now.getMinutes()}`;
         let nowTime = `${hours}:${minutes}`;
         return nowTime;
+    }
+
+    start(){
+    const checkClock = alarm => {
+        if (this.alarmCollection.time === this.getCurrentFormattedTime()){
+            this.alarmCollection.callback;
+        }
+    }
+    if (this.timerId === null) {
+        this.timerId = setInterval(() => this.alarmCollection.forEach(checkClock), 1000)
+    }
+    }
+
+    stop (){
+        if (this.timerId !== null) {
+            this.timerId = null;
+        }
+    }
+
+    printAlarms (){
+        this.alarmCollection.forEach(() => {
+            this.alarmCollection.id = id;
+            this.alarmCollection.time = time;
+            console.log({id, time})
+        }) 
+    }
+
+    clearAlarms (){
+        this.stop();
+        this.alarmCollection = [];
+    }
 }
-
-start () {
-	const checkClock = alarm => {
-		if(this.alarmCollection.time === this.getCurrentFormattedTime()) {
-			this.alarmCollection.callback();
-		}
-	}
-		if (this.timerId === null) {
-		this.timerId = setInterval(() => this.alarmCollection.forEach(checkClock),1000);
-	}
-}
-stop () {
-	if (this.timerId != null) {
-		clearInterval(this.timerId);
-		this.timerId = null;
-	}
-}
-
-printAlarms () {
-	function printCall(element) {
-		console.log('Будильник №' +`${element.id}:${element.time}`)
-	}
-	
-	this.alarmCollection.forEach(printCall); 
-	}	 
-	
-clearAlarms() {
-	clearInterval(this.timerId);
-	this.timerId = null;
-	this.alarmCollection = [];
-	}	
-}
-let clock;
-clock = new AlarmClock();
-  //необходимо создавать объект будильник
-console.log(clock);
-
-  // необходимо создавать добавлять звонок
-    console.log(clock.addClock("16:45", f => f, 1));
-    console.log(clock.alarmCollection.length);
-
-  //необходимо добавлять и удалять звонок
-    console.log(clock.addClock("16:45", f => f, 1));
-    console.log(clock.alarmCollection.length); //(1);
-    console.log(clock.removeClock(1));
-    console.log(clock.alarmCollection.length); //(0);
- //будильник должен возвращать время в формате HH:MM'
-
-const currentDate = new Date();
-console.log(clock.getCurrentFormattedTime());
-
-  //id интервала должно отсутствовать до запуска'//
-console.log(clock.timerId);
-
-  //необходимо запускать будильник
-    console.log(clock.addClock("16:45", f => f, 1));
-    console.log(clock.start());
-    console.log(clock.timerId);
-
-   // console.log(clock.removeClock(1));
-    console.log(clock.alarmCollection.length);
-    console.log(clock.start());
-    console.log(clock.timerId);
-
-  //будильник должен создавать таймер, а затем его удалять
-    console.log(clock.start());
-    console.log(clock.timerId);
-    console.log(clock.stop());
-    console.log(clock.timerId);
-
-  //Будильник должен создавать звонки, а затем очищать их все
-    console.log(clock.addClock("16:45", f => f, 1));
-    console.log(clock.addClock("16:45", f => f, 2));
-    console.log(clock.addClock("16:45", f => f, 3));
-    console.log(clock.alarmCollection.length);
-    console.log(clock.clearAlarms());
-    console.log(clock.alarmCollection.length);
-console.log(clock.printAlarms())
